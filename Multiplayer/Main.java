@@ -3,7 +3,7 @@ package Multiplayer;
 import java.util.Scanner;
 
 /* dist
-javac -d ../dist ./src/Multiplayer/*.java
+javac -d ./dist ./src/Multiplayer/*.java
 cd ./dist
 java Multiplayer.Main
 */
@@ -14,9 +14,9 @@ public class Main {
         while (!game.isGameOver){
             Utility.clearConsole();
             game.display();
-            if (game.player1.isOnMove) System.out.println(Color.Bold.BLUE+"Player 1"+Color.RESET);
-            else System.out.println(Color.Bold.BLUE+"Player 2"+Color.RESET);
-            System.out.println(Color.Regular.BLUE+"Enter yor move?"+Color.RESET);
+            if (game.cross.isOnMove) System.out.println(Color.Bold.BLUE+"Player X"+Color.RESET);
+            else System.out.println(Color.Bold.BLUE+"Player O"+Color.RESET);
+            System.out.println(Color.Regular.BLUE+"Enter your move?"+Color.RESET);
             Scanner sc = new Scanner(System.in);
             int move = sc.nextInt();
             while (!game.isValidMove(move)){
@@ -28,17 +28,17 @@ public class Main {
             Utility.clearConsole();
             game.display();
             boolean win;
-            if (game.player1.isOnMove){
-                win = game.checkWin(game.player1);
+            if (game.cross.isOnMove){
+                win = game.checkWin(game.cross);
             } else {
-                win = game.checkWin(game.player2);
+                win = game.checkWin(game.circle);
             }
             if (win){
                 game.isGameOver = true;
-                if (game.player1.hasWon){
-                    System.out.println("Player 1 has won!!!");
+                if (game.cross.hasWon){
+                    System.out.println("Player X has won!!!");
                 } else {
-                    System.out.println("Player 2 has won!!!");
+                    System.out.println("Player O has won!!!");
                 }
                 break;
             } else {
@@ -55,22 +55,11 @@ public class Main {
         Utility.clearConsole();
         System.out.println(Color.Underline.BLUE+"Welcome To The Tic Tac Toe World"+Color.RESET);
 
-        System.out.print("Player 1: choose your symbol ( 'X' / 'O' ):");
-        Scanner sc = new Scanner(System.in);
-        Utility.Symbol player1Symbol;
-        Utility.Symbol player2Symbol;
-        char ch = sc.nextLine().charAt(0);
-        if (Utility.Symbol.CIRCLE.isEquals(Character.toUpperCase(ch))){
-            player1Symbol = Utility.Symbol.CIRCLE;
-            player2Symbol = Utility.Symbol.CROSS;
-        } else {
-            player1Symbol = Utility.Symbol.CROSS;
-            player2Symbol = Utility.Symbol.CIRCLE;
-        }
-        Player player1 = new Player(player1Symbol, true);
-        Player player2 = new Player(player2Symbol, false);
-        Game game = new Game(player1, player2);
+        Player circle = new Player(Utility.Symbol.CIRCLE, false);
+        Player cross = new Player(Utility.Symbol.CROSS, true);
+        Game game = new Game(cross, circle);
 
+        Scanner sc = new Scanner(System.in);
         boolean exitGame = false;
 
         while(!exitGame){
@@ -81,8 +70,8 @@ public class Main {
                 if (Character.toUpperCase(response) != 'Y'){
                     exitGame = true;
                 } else {
-                    if (player1.hasWon) game = new Game(player1, player2);
-                    else game = new Game(player2, player1);
+                    if (cross.hasWon) game = new Game(cross, circle);
+                    else game = new Game(circle, cross);
                 }
             }
         }

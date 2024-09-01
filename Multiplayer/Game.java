@@ -10,15 +10,15 @@ public class Game {
         {0, 4, 8}, {2, 4, 6}
     };
 
-    public Player player1;
-    public Player player2;
+    public Player cross;
+    public Player circle;
 
     public static int gamesPlayed = 0;
     public boolean isGameOver;
 
     Game(Player player1, Player player2){
-        this.player1 = player1;
-        this.player2 = player2;
+        this.cross = player1;
+        this.circle = player2;
         board = new char[3][3];
         isGameOver = false;
         for (int i = 0; i < 3; i++){
@@ -88,23 +88,23 @@ public class Game {
     }
 
     public void switchMoves(){
-        if (player1.isOnMove){
-            player2.isOnMove = true;
-            player1.isOnMove = false;
+        if (cross.isOnMove){
+            circle.isOnMove = true;
+            cross.isOnMove = false;
         } else {
-            player1.isOnMove = true;
-            player2.isOnMove = false;
+            cross.isOnMove = true;
+            circle.isOnMove = false;
         }
     }
 
     public void updateBoard(int move){
-        Utility.Symbol moveSymbol = player1.isOnMove ? player1.type : player2.type;
+        Utility.Symbol moveSymbol = cross.isOnMove ? cross.type : circle.type;
         int r = move / 3;
         int c = move % 3;
         if (isValidMove(move)){
             board[r][c] = moveSymbol.symbol();
-            if (player1.isOnMove) player1.moves.add(r*3+c);
-            else player2.moves.add(r*3+c);
+            if (cross.isOnMove) cross.moves.add(r*3+c);
+            else circle.moves.add(r*3+c);
         }
     }
 }
