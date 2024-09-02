@@ -1,8 +1,5 @@
 package Multiplayer;
 
-
-import java.io.IOException;
-
 public class Utility {
     public enum Symbol {
         CROSS('X'), CIRCLE('O');

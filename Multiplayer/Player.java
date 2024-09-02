@@ -18,4 +18,9 @@ public class Player {
         this.type = type;
         moves = new ArrayList<>();
     }
+
+    public void resetMoves(){
+        moves.clear();
+        hasWon = false;
+    }
 }

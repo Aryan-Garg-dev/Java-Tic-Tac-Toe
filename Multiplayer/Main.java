@@ -12,8 +12,6 @@ java Multiplayer.Main
 public class Main {
     public static void run(Game game){
         while (!game.isGameOver){
-            Utility.clearConsole();
-            game.display();
             if (game.cross.isOnMove) System.out.println(Color.Bold.BLUE+"Player X"+Color.RESET);
             else System.out.println(Color.Bold.BLUE+"Player O"+Color.RESET);
             System.out.println(Color.Regular.BLUE+"Enter your move?"+Color.RESET);
@@ -63,6 +61,7 @@ public class Main {
         boolean exitGame = false;
 
         while(!exitGame){
+            game.display();
             run(game);
             if (game.isGameOver){
                 System.out.print("Do you want to continue playing? ( Y / N ):");
@@ -70,8 +69,11 @@ public class Main {
                 if (Character.toUpperCase(response) != 'Y'){
                     exitGame = true;
                 } else {
+                    cross.resetMoves();
+                    circle.resetMoves();
                     if (cross.hasWon) game = new Game(cross, circle);
                     else game = new Game(circle, cross);
+                    Utility.clearConsole();
                 }
             }
         }
