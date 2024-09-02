@@ -3,22 +3,28 @@ package Multiplayer;
 import java.util.Scanner;
 
 public class Game {
-    private char[][] board;
+    private final char[][] board;
     private static final int[][] WinningCombinations = {
         {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, //Row
         {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, //Column
         {0, 4, 8}, {2, 4, 6}
     };
 
-    public Player cross;
-    public Player circle;
+    public Player player1;
+    public Player player2;
 
     public static int gamesPlayed = 0;
     public boolean isGameOver;
 
     Game(Player player1, Player player2){
-        this.cross = player1;
-        this.circle = player2;
+        this.player1 = player1;
+        player1.isOnMove = true;
+        player1.resetMoves();
+
+        this.player2 = player2;
+        player2.isOnMove = false;
+        player2.resetMoves();
+
         board = new char[3][3];
         isGameOver = false;
         for (int i = 0; i < 3; i++){
@@ -88,23 +94,23 @@ public class Game {
     }
 
     public void switchMoves(){
-        if (cross.isOnMove){
-            circle.isOnMove = true;
-            cross.isOnMove = false;
+        if (player1.isOnMove){
+            player2.isOnMove = true;
+            player1.isOnMove = false;
         } else {
-            cross.isOnMove = true;
-            circle.isOnMove = false;
+            player1.isOnMove = true;
+            player2.isOnMove = false;
         }
     }
 
     public void updateBoard(int move){
-        Utility.Symbol moveSymbol = cross.isOnMove ? cross.type : circle.type;
+        Utility.Symbol moveSymbol = player1.isOnMove ? player1.type : player2.type;
         int r = move / 3;
         int c = move % 3;
         if (isValidMove(move)){
             board[r][c] = moveSymbol.symbol();
-            if (cross.isOnMove) cross.moves.add(r*3+c);
-            else circle.moves.add(r*3+c);
+            if (player1.isOnMove) player1.moves.add(r*3+c);
+            else player2.moves.add(r*3+c);
         }
     }
 }

@@ -12,8 +12,8 @@ java Multiplayer.Main
 public class Main {
     public static void run(Game game){
         while (!game.isGameOver){
-            if (game.cross.isOnMove) System.out.println(Color.Bold.BLUE+"Player X"+Color.RESET);
-            else System.out.println(Color.Bold.BLUE+"Player O"+Color.RESET);
+            if (game.player1.isOnMove) System.out.println(Color.Bold.BLUE+"Player 1"+Color.RESET);
+            else System.out.println(Color.Bold.BLUE+"Player 2"+Color.RESET);
             System.out.println(Color.Regular.BLUE+"Enter your move?"+Color.RESET);
             Scanner sc = new Scanner(System.in);
             int move = sc.nextInt();
@@ -26,17 +26,17 @@ public class Main {
             Utility.clearConsole();
             game.display();
             boolean win;
-            if (game.cross.isOnMove){
-                win = game.checkWin(game.cross);
+            if (game.player1.isOnMove){
+                win = game.checkWin(game.player1);
             } else {
-                win = game.checkWin(game.circle);
+                win = game.checkWin(game.player2);
             }
             if (win){
                 game.isGameOver = true;
-                if (game.cross.hasWon){
-                    System.out.println("Player X has won!!!");
+                if (game.player1.hasWon){
+                    System.out.println("Player 1 has won!!!");
                 } else {
-                    System.out.println("Player O has won!!!");
+                    System.out.println("Player 2 has won!!!");
                 }
                 break;
             } else {
@@ -53,9 +53,9 @@ public class Main {
         Utility.clearConsole();
         System.out.println(Color.Underline.BLUE+"Welcome To The Tic Tac Toe World"+Color.RESET);
 
-        Player circle = new Player(Utility.Symbol.CIRCLE, false);
-        Player cross = new Player(Utility.Symbol.CROSS, true);
-        Game game = new Game(cross, circle);
+        Player player1 = new Player(Utility.Symbol.CROSS, true);
+        Player player2 = new Player(Utility.Symbol.CIRCLE, false);
+        Game game = new Game(player1, player2);
 
         Scanner sc = new Scanner(System.in);
         boolean exitGame = false;
@@ -69,10 +69,8 @@ public class Main {
                 if (Character.toUpperCase(response) != 'Y'){
                     exitGame = true;
                 } else {
-                    cross.resetMoves();
-                    circle.resetMoves();
-                    if (cross.hasWon) game = new Game(cross, circle);
-                    else game = new Game(circle, cross);
+                    game = new Game(player1, player2);
+                    if (player2.hasWon && !player1.hasWon) game.switchMoves();
                     Utility.clearConsole();
                 }
             }
